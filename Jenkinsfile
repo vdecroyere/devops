@@ -9,12 +9,6 @@ node {
        app = docker.build("test/devops")
     }
 
-    stage('Test image') {
-        app.inside {
-            sh 'echo "Tests passed"'
-        }
-    }
-
     stage('Push image') {
         docker.withRegistry('https://registry.local', 'nexus') {
             app.push("${env.BUILD_NUMBER}")
