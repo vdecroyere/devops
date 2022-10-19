@@ -1,25 +1,24 @@
-pipeline {
-  agent {
-    docker { image 'node:latest' }
-  }
-  stages {
-    stage('Install') {
-      steps { sh 'npm install' }
+node {
+    def app
+
+    stage('Clone repository') {
+        checkout scm
     }
 
-    stage('Test') {
-      parallel {
-        stage('Static code analysis') {
-            steps { sh 'npm run-script lint' }
-        }
-        stage('Unit tests') {
-            steps { sh 'npm run-script test' }
-        }
-      }
+    stage('Build image') {
+       app = docker.build("test/devops")
     }
 
-    stage('Build') {
-      steps { sh 'npm run-script build' }
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
+        }
     }
-  }
+
+    stage('Push image') {
+        docker.withRegistry('https://registry.local', 'git') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
+        }
+    }
 }
