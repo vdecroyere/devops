@@ -16,7 +16,7 @@ node {
     }
 
     stage('Push image') {
-        docker.withRegistry('https://registry.local', 'git') {
+        docker.withRegistry('https://registry.local', 'nexus') {
             app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
