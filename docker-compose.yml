@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  reverse-proxy:
+    external: true
+
+services:
+  devops:
+    container_name: devops
+    image: test/devops:latest
+    networks:
+      - reverse-proxy
+    labels:
+      # Frontend
+      - "traefik.enable=true"
+      - "traefik.http.routers.devops.rule=Host(`devops.decroyere.net`)"
+      - "traefik.http.routers.devops.entrypoints=websecure"
+      - "traefik.http.services.devops.loadbalancer.server.port=4200"
+      - "traefik.http.routers.devops.tls=true"
+      - "traefik.http.routers.devops.tls.certresolver=letsencrypt"
