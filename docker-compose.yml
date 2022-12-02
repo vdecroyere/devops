@@ -9,7 +9,7 @@ services:
     container_name: devops
     image: test/devops:latest
     networks:
-      - reverse-proxy
+      - proxy
     labels:
       # Frontend
       - "traefik.enable=true"
