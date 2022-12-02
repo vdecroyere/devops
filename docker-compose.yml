@@ -13,7 +13,7 @@ services:
     labels:
       # Frontend
       - "traefik.enable=true"
-      - "traefik.http.routers.devops.rule=Host(`devops.decroyere.net`)"
+      - "traefik.http.routers.devops.rule=Host(`devops.local`)"
       - "traefik.http.routers.devops.entrypoints=websecure"
       - "traefik.http.services.devops.loadbalancer.server.port=4200"
       - "traefik.http.routers.devops.tls=true"
